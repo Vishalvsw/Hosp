@@ -1,28 +1,14 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { StripeIcon } from '../components/icons/StripeIcon';
 import { RazorpayIcon } from '../components/icons/RazorpayIcon';
-import { mockPatients, mockDoctors, mockAppointments } from '../data/mockData';
-import type { Appointment, Patient, Doctor } from '../types';
+import { mockPatients, mockDoctors, mockAppointments, mockInvoices } from '../data/mockData';
+import type { Appointment, Patient, Doctor, Invoice, InvoiceStatus, InvoiceFormData } from '../types';
 import AppointmentDetailModal from '../components/AppointmentDetailModal';
+import AddInvoiceModal from '../components/AddInvoiceModal';
 import { CalendarIcon } from '../components/icons/CalendarIcon';
+import { PlusIcon } from '../components/icons/PlusIcon';
+import { useAuth } from '../hooks/useAuth';
 
-interface Invoice {
-  id: string;
-  patientName: string;
-  date: string;
-  amount: number;
-  status: 'Paid' | 'Pending' | 'Overdue';
-  appointmentId?: number;
-}
-
-const mockInvoices: Invoice[] = [
-  { id: 'INV-001', patientName: 'John Doe', date: '2023-10-15', amount: 250.00, status: 'Paid', appointmentId: 1 },
-  { id: 'INV-002', patientName: 'Jane Smith', date: '2023-11-02', amount: 150.75, status: 'Paid', appointmentId: 2 },
-  { id: 'INV-003', patientName: 'Robert Johnson', date: '2023-09-28', amount: 800.00, status: 'Overdue', appointmentId: 7 },
-  { id: 'INV-004', patientName: 'Emily White', date: '2023-10-22', amount: 75.00, status: 'Pending' },
-  { id: 'INV-005', patientName: 'Michael Brown', date: '2023-11-05', amount: 450.50, status: 'Paid', appointmentId: 4 },
-  { id: 'INV-006', patientName: 'Jessica Davis', date: '2023-10-30', amount: 120.00, status: 'Pending' },
-];
 
 const getStatusColor = (status: Invoice['status']) => {
   switch (status) {
@@ -70,15 +56,25 @@ const GatewayCard: React.FC<{
 );
 
 export const BillingPage: React.FC = () => {
+    const { hasRole } = useAuth();
+    const canManageBilling = hasRole(['admin', 'receptionist']);
+
+    const [invoices, setInvoices] = useState<Invoice[]>([]);
     const [stripeConnected, setStripeConnected] = useState(true);
     const [razorpayConnected, setRazorpayConnected] = useState(false);
     
     const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [isAddInvoiceModalOpen, setIsAddInvoiceModalOpen] = useState(false);
+    
     const [selectedAppointmentDetails, setSelectedAppointmentDetails] = useState<{
         appointment: Appointment | null;
         patient: Patient | null;
         doctor: Doctor | null;
     }>({ appointment: null, patient: null, doctor: null });
+
+    useEffect(() => {
+        setInvoices(mockInvoices);
+    }, []);
     
     const appointmentMap = useMemo(() => new Map(mockAppointments.map(a => [a.id, a])), []);
     const patientMap = useMemo(() => new Map(mockPatients.map(p => [p.id, p])), []);
@@ -94,6 +90,20 @@ export const BillingPage: React.FC = () => {
             });
             setIsDetailModalOpen(true);
         }
+    };
+
+    const handleUpdateStatus = (invoiceId: string, newStatus: InvoiceStatus) => {
+        setInvoices(invoices.map(inv => inv.id === invoiceId ? { ...inv, status: newStatus } : inv));
+    };
+
+    const handleSaveInvoice = (formData: InvoiceFormData) => {
+        const newInvoice: Invoice = {
+            id: `INV-${String(invoices.length + 10).padStart(3, '0')}`,
+            ...formData,
+            status: 'Pending',
+        };
+        setInvoices([newInvoice, ...invoices]);
+        setIsAddInvoiceModalOpen(false);
     };
     
     const handleCloseModal = () => setIsDetailModalOpen(false);
@@ -126,7 +136,18 @@ export const BillingPage: React.FC = () => {
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow">
-        <h2 className="text-lg font-semibold text-slate-800 mb-4">Recent Invoices</h2>
+        <div className="flex justify-between items-center mb-4">
+            <h2 className="text-lg font-semibold text-slate-800">Recent Invoices</h2>
+            {canManageBilling && (
+                <button
+                    onClick={() => setIsAddInvoiceModalOpen(true)}
+                    className="flex items-center gap-2 bg-cyan-600 text-white font-semibold py-2 px-4 rounded-md hover:bg-cyan-700"
+                >
+                    <PlusIcon className="w-5 h-5" />
+                    Create New Invoice
+                </button>
+            )}
+        </div>
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-slate-200">
             <thead className="bg-slate-50">
@@ -140,10 +161,10 @@ export const BillingPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-slate-200">
-              {mockInvoices.map((invoice) => (
+              {invoices.map((invoice) => (
                 <tr key={invoice.id} className="hover:bg-slate-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">{invoice.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{invoice.patientName}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{patientMap.get(invoice.patientId)?.name || 'Unknown Patient'}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">{invoice.date}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">${invoice.amount.toFixed(2)}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
@@ -152,14 +173,17 @@ export const BillingPage: React.FC = () => {
                     </span>
                   </td>
                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex items-center gap-4">
-                        <button className="text-cyan-600 hover:text-cyan-900">
-                          View
-                        </button>
+                    <div className="flex items-center gap-2">
+                        {canManageBilling && invoice.status !== 'Paid' && (
+                           <button onClick={() => handleUpdateStatus(invoice.id, 'Paid')} className="text-green-600 hover:text-green-900">Mark as Paid</button>
+                        )}
+                         {canManageBilling && invoice.status === 'Paid' && (
+                           <button onClick={() => handleUpdateStatus(invoice.id, 'Pending')} className="text-amber-600 hover:text-amber-900">Mark as Pending</button>
+                        )}
                         {invoice.appointmentId && (
                             <button
                                 onClick={() => handleOpenAppointmentModal(invoice.appointmentId!)}
-                                className="text-slate-500 hover:text-slate-700"
+                                className="text-slate-500 hover:text-slate-700 p-1"
                                 title="View Associated Appointment"
                             >
                                 <CalendarIcon className="w-5 h-5" />
@@ -181,6 +205,15 @@ export const BillingPage: React.FC = () => {
             patient={selectedAppointmentDetails.patient}
             doctor={selectedAppointmentDetails.doctor}
         />
+
+        {canManageBilling && (
+            <AddInvoiceModal
+                isOpen={isAddInvoiceModalOpen}
+                onClose={() => setIsAddInvoiceModalOpen(false)}
+                onSaveInvoice={handleSaveInvoice}
+                patients={mockPatients}
+            />
+        )}
     </div>
   );
 };

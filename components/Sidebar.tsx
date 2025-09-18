@@ -16,7 +16,7 @@ const navigation: NavLinkItem[] = [
   { name: 'Dashboard', href: '/dashboard', icon: DashboardIcon, allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist', 'patient'] },
   { name: 'Patients', href: '/patients', icon: PatientsIcon, allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist'] },
   { name: 'Doctors', href: '/doctors', icon: DoctorIcon, allowedRoles: ['admin', 'receptionist'] },
-  { name: 'Appointments', href: '/appointments', icon: AppointmentsIcon, allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist', 'patient'] },
+  { name: 'Appointments', href: '/appointments', icon: AppointmentsIcon, allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist'] },
   { name: 'EMR', href: '/emr', icon: EMRIcon, allowedRoles: ['admin', 'doctor', 'nurse'] },
   { name: 'Billing', href: '/billing', icon: BillingIcon, allowedRoles: ['admin', 'receptionist'] },
   { name: 'Project Plan', href: '/plan', icon: RoadmapIcon, allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist'] },

@@ -1,4 +1,4 @@
-import type { Patient, Appointment, EMRRecord, Doctor } from '../types';
+import type { Patient, Appointment, EMRRecord, Doctor, Invoice } from '../types';
 
 export const mockPatients: Patient[] = [
   { id: 1, name: 'John Doe', age: 45, gender: 'Male', contactPhone: '555-0101', lastVisit: '2023-10-15', status: 'Stable', insuranceProvider: 'Blue Cross', policyNumber: 'XJ559201', groupNumber: 'GRP-1001' },
@@ -64,4 +64,13 @@ export const mockEMRData: EMRRecord[] = [
     { id: 21, patientId: 1, type: 'Lab Result', date: '2023-10-15', title: 'A1C Level', details: 'A1C at 5.5%, indicating good blood sugar control.', author: 'LabCorp' },
     { id: 22, patientId: 8, type: 'Imaging Report', date: '2023-11-08', title: 'Ultrasound', details: 'Anatomy scan is normal. All expected structures are visible and appropriately sized for gestational age.', author: 'Dr. Susan Ray' },
     { id: 23, patientId: 11, type: 'Progress Note', date: '2023-11-10', title: 'Initial Consultation', details: 'New patient visit. Discussed medical history and current concerns.', author: 'Dr. Ben Carter' },
+];
+
+export const mockInvoices: Invoice[] = [
+  { id: 'INV-001', patientId: 1, date: '2023-10-15', amount: 250.00, status: 'Paid', appointmentId: 1 },
+  { id: 'INV-002', patientId: 2, date: '2023-11-02', amount: 150.75, status: 'Paid', appointmentId: 2 },
+  { id: 'INV-003', patientId: 3, date: '2023-09-28', amount: 800.00, status: 'Overdue', appointmentId: 7 },
+  { id: 'INV-004', patientId: 4, date: '2023-10-22', amount: 75.00, status: 'Pending' },
+  { id: 'INV-005', patientId: 5, date: '2023-11-05', amount: 450.50, status: 'Paid', appointmentId: 4 },
+  { id: 'INV-006', patientId: 6, date: '2023-10-30', amount: 120.00, status: 'Pending' },
 ];

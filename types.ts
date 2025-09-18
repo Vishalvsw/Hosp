@@ -91,3 +91,17 @@ export interface NavLinkItem {
   icon: React.ElementType;
   allowedRoles: UserRole[];
 }
+
+// Billing types
+export type InvoiceStatus = 'Paid' | 'Pending' | 'Overdue';
+
+export interface Invoice {
+  id: string;
+  patientId: number;
+  date: string;
+  amount: number;
+  status: InvoiceStatus;
+  appointmentId?: number;
+}
+
+export type InvoiceFormData = Omit<Invoice, 'id' | 'status'>;
