@@ -11,10 +11,11 @@ export const mockPatients: Patient[] = [
   { id: 8, name: 'Sarah Miller', age: 25, gender: 'Female', contactPhone: '555-0108', lastVisit: '2023-11-08', status: 'Stable' },
   { id: 9, name: 'Chris Lee', age: 48, gender: 'Male', contactPhone: '555-0109', lastVisit: '2023-10-18', status: 'Recovering', insuranceProvider: 'Aetna', policyNumber: 'AE459988', groupNumber: 'GRP-2023' },
   { id: 10, name: 'Amanda Taylor', age: 31, gender: 'Female', contactPhone: '555-0110', lastVisit: '2023-11-01', status: 'Stable' },
+  { id: 11, userId: '4', name: 'Pat Patient', age: 35, gender: 'Female', contactPhone: '555-0111', lastVisit: '2023-11-10', status: 'Stable', insuranceProvider: 'Aetna', policyNumber: 'AE123456', groupNumber: 'GRP-2024' },
 ];
 
 export const mockDoctors: Doctor[] = [
-    { id: 1, name: 'Dr. Carol Evans', specialty: 'Cardiologist', contactPhone: '555-0201', email: 'carol.evans@hms.pro' },
+    { id: 1, userId: '1', name: 'Dr. Carol Evans', specialty: 'Cardiologist', contactPhone: '555-0201', email: 'carol.evans@hms.pro' },
     { id: 2, name: 'Dr. Ben Carter', specialty: 'Neurologist', contactPhone: '555-0202', email: 'ben.carter@hms.pro' },
     { id: 3, name: 'Dr. Susan Ray', specialty: 'Radiologist', contactPhone: '555-0203', email: 'susan.ray@hms.pro' },
     { id: 4, name: 'Dr. Michael Lee', specialty: 'Pediatrician', contactPhone: '555-0204', email: 'michael.lee@hms.pro' },
@@ -36,6 +37,7 @@ export const mockAppointments: Appointment[] = [
   { id: 6, patientId: 8, doctorId: 1, date: getDayString(2), time: '11:30 AM', type: 'New Patient', status: 'Confirmed' },
   { id: 7, patientId: 3, doctorId: 2, date: getDayString(-1), time: '02:00 PM', type: 'Emergency', status: 'Confirmed' },
   { id: 8, patientId: 7, doctorId: 1, date: getDayString(-2), time: '03:00 PM', type: 'Urgent Care', status: 'Confirmed' },
+  { id: 9, patientId: 11, doctorId: 2, date: getDayString(1), time: '09:00 AM', type: 'Consultation', status: 'Confirmed' },
 ];
 
 export const mockEMRData: EMRRecord[] = [
@@ -60,5 +62,6 @@ export const mockEMRData: EMRRecord[] = [
     { id: 19, patientId: 9, type: 'Imaging Report', date: '2023-09-15', title: 'Knee X-Ray', details: 'Minor ligament sprain. No fractures detected.', author: 'Dr. Susan Ray' },
     { id: 20, patientId: 10, type: 'Progress Note', date: '2023-11-01', title: 'Flu Shot Administration', details: 'Patient received annual influenza vaccine. No adverse reactions noted.', author: 'Nurse Practitioner' },
     { id: 21, patientId: 1, type: 'Lab Result', date: '2023-10-15', title: 'A1C Level', details: 'A1C at 5.5%, indicating good blood sugar control.', author: 'LabCorp' },
-    { id: 22, patientId: 8, type: 'Imaging Report', date: '2023-11-08', title: 'Ultrasound', details: 'Anatomy scan is normal. All expected structures are visible and appropriately sized for gestational age.', author: 'Dr. Susan Ray' }
+    { id: 22, patientId: 8, type: 'Imaging Report', date: '2023-11-08', title: 'Ultrasound', details: 'Anatomy scan is normal. All expected structures are visible and appropriately sized for gestational age.', author: 'Dr. Susan Ray' },
+    { id: 23, patientId: 11, type: 'Progress Note', date: '2023-11-10', title: 'Initial Consultation', details: 'New patient visit. Discussed medical history and current concerns.', author: 'Dr. Ben Carter' },
 ];

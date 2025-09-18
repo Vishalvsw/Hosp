@@ -5,6 +5,7 @@ export type Gender = 'Male' | 'Female';
 
 export interface Patient {
   id: number;
+  userId?: string;
   name: string;
   age: number;
   gender: Gender;
@@ -16,17 +17,18 @@ export interface Patient {
   groupNumber?: string;
 }
 
-export type PatientFormData = Omit<Patient, 'id' | 'lastVisit' | 'status'>;
+export type PatientFormData = Omit<Patient, 'id' | 'lastVisit' | 'status' | 'userId'>;
 
 export interface Doctor {
   id: number;
+  userId?: string;
   name: string;
   specialty: string;
   contactPhone: string;
   email: string;
 }
 
-export type DoctorFormData = Omit<Doctor, 'id'>;
+export type DoctorFormData = Omit<Doctor, 'id' | 'userId'>;
 
 export type AppointmentStatus = 'Confirmed' | 'Pending' | 'Cancelled';
 export interface Appointment {

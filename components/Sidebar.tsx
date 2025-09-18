@@ -19,7 +19,7 @@ const navigation: NavLinkItem[] = [
   { name: 'Appointments', href: '/appointments', icon: AppointmentsIcon, allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist', 'patient'] },
   { name: 'EMR', href: '/emr', icon: EMRIcon, allowedRoles: ['admin', 'doctor', 'nurse'] },
   { name: 'Billing', href: '/billing', icon: BillingIcon, allowedRoles: ['admin', 'receptionist'] },
-  { name: 'Project Plan', href: '/plan', icon: RoadmapIcon, allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist', 'patient'] },
+  { name: 'Project Plan', href: '/plan', icon: RoadmapIcon, allowedRoles: ['admin', 'doctor', 'nurse', 'receptionist'] },
 ];
 
 const Sidebar: React.FC = () => {
