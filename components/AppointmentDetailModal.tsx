@@ -61,8 +61,12 @@ const AppointmentDetailModal: React.FC<AppointmentDetailModalProps> = ({ isOpen,
                 <p className="text-slate-600">Contact: {patient?.contactPhone ?? 'N/A'}</p>
             </div>
              <div className="bg-slate-50 p-3 rounded-lg">
+                <p className="font-semibold text-slate-700">Doctor Information</p>
+                <p className="text-slate-600">{doctor?.name ?? 'Unknown Doctor'}</p>
+                <p className="text-slate-600">Specialty: {doctor?.specialty ?? 'N/A'}</p>
+            </div>
+             <div className="bg-slate-50 p-3 rounded-lg">
                 <p className="font-semibold text-slate-700">Appointment Information</p>
-                <p className="text-slate-600">Doctor: {doctor?.name ?? 'Unknown Doctor'} ({doctor?.specialty ?? 'N/A'})</p>
                 <p className="text-slate-600">Date: {appointment.date}</p>
                 <p className="text-slate-600">Time: {appointment.time}</p>
                 <p className="text-slate-600">Type: {appointment.type}</p>
