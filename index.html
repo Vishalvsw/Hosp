@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital Management System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/main.min.css' rel='stylesheet' />
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        cyan: {
+                            50: '#ecfeff',
+                            100: '#cffafe',
+                            200: '#a5f3fd',
+                            300: '#67e8f9',
+                            400: '#22d3ee',
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                            700: '#0e7490',
+                            800: '#155e75',
+                            900: '#164e63',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Custom FullCalendar Styles */
+        .fc {
+            font-family: 'Inter', sans-serif;
+            border: none;
+        }
+        .fc .fc-toolbar-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b; /* slate-800 */
+        }
+        .fc .fc-button {
+            background-color: #f8fafc; /* slate-50 */
+            border-color: #e2e8f0; /* slate-200 */
+            color: #475569; /* slate-600 */
+            font-weight: 500;
+            box-shadow: none;
+        }
+        .fc .fc-button:hover {
+             background-color: #f1f5f9; /* slate-100 */
+        }
+        .fc .fc-button-primary {
+            background-color: #06b6d4; /* cyan-500 */
+            border-color: #06b6d4;
+            color: white;
+        }
+        .fc .fc-button-primary:not(:disabled):active, .fc .fc-button-primary:not(:disabled).fc-button-active {
+            background-color: #0891b2; /* cyan-600 */
+            border-color: #0891b2;
+        }
+        .fc .fc-button-primary:hover {
+            background-color: #0891b2; /* cyan-600 */
+            border-color: #0891b2;
+        }
+        .fc .fc-daygrid-day.fc-day-today {
+            background-color: #ecfeff; /* cyan-50 */
+        }
+        .fc-theme-standard .fc-scrollgrid {
+             border: 1px solid #e2e8f0; /* slate-200 */
+        }
+        .fc-theme-standard th, .fc-theme-standard td {
+            border: 1px solid #e2e8f0; /* slate-200 */
+        }
+        .fc .fc-daygrid-day-number {
+             padding: 0.5em;
+        }
+         .fc .fc-event {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="h-full">
+    <div id="root"></div>
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.1.1",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+        "react/": "https://aistudiocdn.com/react@^19.1.1/",
+        "react-router-dom": "https://aistudiocdn.com/react-router-dom@^7.9.1",
+        "@fullcalendar/react": "https://esm.sh/@fullcalendar/react@6.1.11",
+        "@fullcalendar/core": "https://esm.sh/@fullcalendar/core@6.1.11",
+        "@fullcalendar/daygrid": "https://esm.sh/@fullcalendar/daygrid@6.1.11",
+        "@fullcalendar/timegrid": "https://esm.sh/@fullcalendar/timegrid@6.1.11",
+        "@fullcalendar/interaction": "https://esm.sh/@fullcalendar/interaction@6.1.11"
+      }
+    }
+    </script>
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>
