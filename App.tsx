@@ -13,35 +13,24 @@ import { SettingsPage } from './pages/SettingsPage';
 import { UnauthorizedPage } from './pages/UnauthorizedPage';
 import ContentDisplay from './components/ContentDisplay';
 import { PLAN_DATA } from './data/hmsPlanData';
+import { useAuth } from './hooks/useAuth';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
-// Dynamically determine the basename from the URL pathname.
-// This is necessary because the app is often served under a dynamic, UUID-based path.
 const getBasename = (): string => {
-  // The path is expected to be in the format: /<uuid>/<route> or just /<uuid>
-  // This regex extracts the initial UUID segment to use as the base path.
   const match = window.location.pathname.match(/^(\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
-  
-  // If a UUID path is found, use it as the basename.
-  if (match) {
-    return match[1];
-  }
-
-  // Fallback for environments where there is no UUID path (e.g., local development).
-  return '/';
+  return match ? match[1] : '/';
 };
 
 const AppRoutes: React.FC = () => {
     const location = useLocation();
 
-    // When the user navigates to the base path (e.g., /<uuid>/), the location.pathname
-    // inside the router context will be just "/". We redirect this to the dashboard.
     if (location.pathname === '/') {
         return <Navigate to="/dashboard" replace />;
     }
 
     return (
         <Routes>
-            {/* The root path is handled above, so we don't need a route for "/" here. */}
             <Route path="/dashboard" element={<ProtectedRoute allowedRoles={['admin', 'doctor', 'nurse', 'receptionist', 'patient']}><DashboardPage /></ProtectedRoute>} />
             <Route path="/patients" element={<ProtectedRoute allowedRoles={['admin', 'doctor', 'nurse', 'receptionist']}><PatientsPage /></ProtectedRoute>} />
             <Route path="/doctors" element={<ProtectedRoute allowedRoles={['admin', 'receptionist']}><DoctorsPage /></ProtectedRoute>} />
@@ -55,19 +44,35 @@ const AppRoutes: React.FC = () => {
     );
 };
 
+const AuthRoutes: React.FC = () => {
+    return (
+        <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+    );
+};
+
 
 const App: React.FC = () => {
+  const { isAuthenticated } = useAuth();
+  
   return (
     <Router basename={getBasename()}>
-      <div className="flex h-screen bg-slate-100 font-sans">
-        <Sidebar />
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <Header />
-          <main className="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100 p-6">
-            <AppRoutes />
-          </main>
+      {isAuthenticated ? (
+        <div className="flex h-screen bg-slate-100 font-sans">
+          <Sidebar />
+          <div className="flex-1 flex flex-col overflow-hidden">
+            <Header />
+            <main className="flex-1 overflow-x-hidden overflow-y-auto bg-slate-100 p-6">
+              <AppRoutes />
+            </main>
+          </div>
         </div>
-      </div>
+      ) : (
+        <AuthRoutes />
+      )}
     </Router>
   );
 };

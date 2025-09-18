@@ -79,6 +79,7 @@ export interface User {
   role: UserRole;
   avatarUrl?: string;
   title: string;
+  password?: string;
 }
 
 // Type for Sidebar navigation items
